@@ -1,23 +1,31 @@
-import React, { useState, useEffect, useMemo } from "react";
+import React, { useState, useEffect, useMemo, useContext } from "react";
 import './App.css';
-import AddTask from "./conteners/AddTask"
-import Sort from "./conteners/Sort"
-import TaskList from "./conteners/TaskList"
-import { useContext } from "react";
-import { TaskListReducerContext } from "./contexts/taskListReducerContext"
-
-
+import AddTask from "./conteners/AddTask";
+import Sort from "./conteners/Sort";
+import TaskList from "./conteners/TaskList";
+import { TaskListReducerContext } from "./contexts/taskListReducerContext";
+import { authContext } from "./contexts/AuthProviderContext";
+import { Redirect } from "react-router-dom";
+import logoutImage from "./Images/logout.png";
+import hoverLogoutImage from "./Images/hover.png";
+// ToDo: Logowanie do udawanego serwera, klikając na task przechodzimy do  wyświetlenia i cofka strzałką w przeglądarce
+// goBack() i goForward() to odpowiendiki strzałek
 
 function useFetch(url) {
   const [externalData, setExternalData] = useState([]);
 
   useEffect(() => {
+    let isMounted = true;
     async function fetchData() {
       let info = await fetch(url);
       let response = await info.json();
-      setExternalData(response);
+      if (isMounted) {
+        setExternalData(response);
+      }
     };
     fetchData();
+    return isMounted = false
+
   }, [url]
   )
   return externalData;
@@ -25,8 +33,9 @@ function useFetch(url) {
 
 
 
-function App() {
+function App(props) {
   let { state, dispatch, storageKey, elementsSizeUnit } = useContext(TaskListReducerContext);
+  const { isLogged, signOut } = useContext(authContext);
 
   let externalData = useFetch("https://jsonplaceholder.typicode.com/users/1/todos");
 
@@ -34,17 +43,23 @@ function App() {
     localStorage.setItem(storageKey, JSON.stringify([...state.tasks]));
   }, [state.tasks, storageKey]);
 
-  useMemo(() => {
+  useEffect(() => {
     dispatch({ type: "JOIN_EXTERNAL_DATA", externalData: externalData })
   }, [externalData, dispatch])
-
+  //UseMemo
   let appHeight = (elementsSizeUnit / 3);
 
+
+  if (!isLogged) {
+    return (<Redirect to={{ pathname: "/login" }} />)
+  }
+
   return (
-    <div className="appContainer" style={{ width: elementsSizeUnit * 3, height: appHeight }}>
-      <span style={{ display: "flex", justifyContent: "space-between", height: appHeight, width: window.innerWidth, background: "rgb(50,200,255)" }}>
+    <div className="appContainer" style={{ position: "absolute", width: "100%", height: appHeight }}>
+      <span style={{ position: "relative", display: "inline-flex", height: appHeight, width: "100%", background: "rgb(50,200,255)" }}>
         <AddTask />
         <Sort />
+        <img alt="logoutButton" onMouseOver={e => (e.currentTarget.src = hoverLogoutImage)} onMouseOut={e => (e.currentTarget.src = logoutImage)} style={{ height: appHeight / 3, top: appHeight / 3.5, right: elementsSizeUnit / 10, position: "absolute" }} src={logoutImage} onClick={() => { signOut() }}></img>
       </span>
       <TaskList />
     </div>

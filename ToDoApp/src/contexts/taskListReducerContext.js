@@ -3,8 +3,9 @@ const TaskListReducerContext = React.createContext({});
 
 function grabLocalStorage(key, defaultValue) {
     const valueInLocalStorage = localStorage.getItem(key);
-    if (valueInLocalStorage) {
-        return JSON.parse(valueInLocalStorage)
+    if (valueInLocalStorage !== null) {
+        if (valueInLocalStorage.length > 0)
+            return JSON.parse(valueInLocalStorage)
     }
     return typeof defaultValue === "function" ? defaultValue() : defaultValue
 }
@@ -28,7 +29,8 @@ function taskListReducer(state, action) {
                     return {
                         title: task.title,
                         completed: task.completed,
-                        isDisplayable: "inline"
+                        isDisplayable: "inline",
+                        id: "task" + task.id
                     }
                 });
                 return { ...state, tasks: modifiedData };
@@ -43,7 +45,7 @@ function taskListReducer(state, action) {
         case "SUBMIT":
             {
                 return {
-                    ...state, tasks: [...state.tasks, { title: state.formTask, completed: false, isDisplayable: "inline" }], formTask: ""
+                    ...state, tasks: [...state.tasks, { title: state.formTask, completed: false, isDisplayable: "inline", id: `Task${state.tasks.length + 1}` }], formTask: ""
                 }
             }
         case "DELETE": {
@@ -90,7 +92,6 @@ const TaskListReducerContextProvider = (props) => {
     let storageKey = "toDoTaskList";
     let elementsSizeUnit = window.innerHeight / 2;
     const [state, dispatch] = useReducer(taskListReducer, [storageKey, []], setTnitialState)
-
 
     return (
         <TaskListReducerContext.Provider value={{ state, dispatch, storageKey, elementsSizeUnit }}>

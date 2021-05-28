@@ -2,25 +2,39 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
 import App from './App';
-import AppTest from './AppTest';
+// import AppTest from './AppTest';
 import reportWebVitals from './reportWebVitals';
 import { TaskListReducerContextProvider } from "./contexts/taskListReducerContext"
+import { AuthProviderContext } from "./contexts/AuthProviderContext"
+import { BrowserRouter, Switch, Route } from "react-router-dom";
+import PublicPage from "./components/PublicPage";
+import ToDo from "./components/ToDo"
+import ErrorPage from "./components/ErrorPage"
 
-const apiData = [
-  { category: "Sporting Goods", price: "$49.99", stocked: true, name: "Football" },
-  { category: "Sporting Goods", price: "$9.99", stocked: true, name: "Baseball" },
-  { category: "Sporting Goods", price: "$29.99", stocked: false, name: "Basketball" },
-  { category: "Electronics", price: "$99.99", stocked: true, name: "iPod Touch" },
-  { category: "Electronics", price: "$399.99", stocked: false, name: "iPhone 5" },
-  { category: "Electronics", price: "$199.99", stocked: true, name: "Nexus 7" }
-];
 
 
 ReactDOM.render(
   <React.StrictMode>
-    <TaskListReducerContextProvider>
-      <App data={apiData} />
-    </TaskListReducerContextProvider>
+    <BrowserRouter >
+      <AuthProviderContext>
+        <TaskListReducerContextProvider>
+          <Switch>
+            <Route path="/todo">
+              <App />
+            </Route>
+            <Route path="/todos/:id">
+              <ToDo></ToDo>
+            </Route>
+            <Route exact path={["/login", "/"]}>
+              <PublicPage />
+            </Route>
+            <Route path="/*">
+              <ErrorPage />
+            </Route>
+          </Switch>
+        </TaskListReducerContextProvider>
+      </AuthProviderContext>
+    </BrowserRouter>
   </React.StrictMode>,
   document.getElementById('root')
 );

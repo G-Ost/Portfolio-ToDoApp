@@ -7,13 +7,14 @@ function TaskList() {
     let filterCondition = state.filterCondition
     return (
         <>
-            <div className="tasks" style={{ left: elementsSizeUnit / 10 }}>
+            <div className="tasks" style={{ left: elementsSizeUnit / 10, width: elementsSizeUnit * 3 }}>
                 {tasks.map((task, index) => {
                     if (filterCondition === "All" || task.completed === filterCondition) {
                         return (
                             <TaskRow key={index} task={task} index={index} ></TaskRow>
                         )
                     }
+                    else return false;
                 })}
             </div>
 

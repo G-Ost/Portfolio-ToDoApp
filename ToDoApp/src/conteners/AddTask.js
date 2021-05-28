@@ -13,14 +13,14 @@ function AddTask(props) {
         dispatch({ type: "FIELD", payload: e.target.value })
     }
 
+    let divStyle = { display: "flex", position: "relative", left: elementsSizeUnit / 6, fontSize: elementsSizeUnit / 12.5, top: elementsSizeUnit / 10, height: "100%", width: "auto", marginRight: elementsSizeUnit / 2 };
     return (
-        <>
-            <label id="inputLabel" style={{ left: elementsSizeUnit / 6, fontSize: elementsSizeUnit / 12.5, height: elementsSizeUnit / 5, width: elementsSizeUnit * 1.5 }}>
-                Add new task: <br />
-                <input id="taskInput" style={{ fontSize: elementsSizeUnit / 18, width: elementsSizeUnit * 1.3, height: elementsSizeUnit / 13 }} type="text" value={state.formTask} onChange={handleChange} />
-                <Button clickFunction={handleSubmit} isRemove={false} title="+" ></Button>
-            </label>
-        </>
+        <div style={divStyle}>
+            <label id="inputLabel" />
+                Add new task: &nbsp;
+            <input id="taskInput" style={{ fontSize: elementsSizeUnit / 18, width: elementsSizeUnit * 0.5, height: elementsSizeUnit / 11 }} type="text" value={state.formTask} onChange={handleChange} />
+            <Button clickFunction={handleSubmit} isRemove={false} title="+" ></Button>
+        </div>
     )
 }
 
