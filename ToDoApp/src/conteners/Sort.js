@@ -7,7 +7,7 @@ function Sort(props) {
     function selectHandler(e) {
         dispatch({ type: "FILTER", payload: e.target.value })
     }
-    let divStyle = { display: "flex", position: "relative", top: elementsSizeUnit / 10, left: elementsSizeUnit / 6, fontSize: elementsSizeUnit / 12.5, height: "100%", width: "auto", marginRight: elementsSizeUnit / 2 };
+    let divStyle = { display: "flex", position: "relative", top: elementsSizeUnit / 10, left: elementsSizeUnit / 6, fontSize: elementsSizeUnit / 12.5, height: "100%", width: "auto", marginRight: elementsSizeUnit / 2, whiteSpace: "no-wrap" };
     return (
         <div style={divStyle}>
             <label id="containerLabel" />Sort by:&nbsp;

@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useMemo, useContext } from "react";
+import React, { useState, useEffect, useContext, useMemo } from "react";
 import './App.css';
 import AddTask from "./conteners/AddTask";
 import Sort from "./conteners/Sort";
@@ -8,25 +8,24 @@ import { authContext } from "./contexts/AuthProviderContext";
 import { Redirect } from "react-router-dom";
 import logoutImage from "./Images/logout.png";
 import hoverLogoutImage from "./Images/hover.png";
-// ToDo: Logowanie do udawanego serwera, klikając na task przechodzimy do  wyświetlenia i cofka strzałką w przeglądarce
-// goBack() i goForward() to odpowiendiki strzałek
 
 function useFetch(url) {
   const [externalData, setExternalData] = useState([]);
 
-  useEffect(() => {
-    let isMounted = true;
-    async function fetchData() {
-      let info = await fetch(url);
-      let response = await info.json();
-      if (isMounted) {
-        setExternalData(response);
-      }
-    };
-    fetchData();
-    return isMounted = false
+  useMemo(
+    () => {
+      let isMounted = true;
 
-  }, [url]
+      async function fetchData() {
+        let info = await fetch(url);
+        let response = await info.json();
+        setExternalData(response);
+      };
+      if (isMounted) {
+        fetchData();
+      }
+      return () => { isMounted = false }
+    }, [url]
   )
   return externalData;
 }
@@ -46,7 +45,6 @@ function App(props) {
   useEffect(() => {
     dispatch({ type: "JOIN_EXTERNAL_DATA", externalData: externalData })
   }, [externalData, dispatch])
-  //UseMemo
   let appHeight = (elementsSizeUnit / 3);
 
 
