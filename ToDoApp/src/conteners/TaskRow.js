@@ -19,15 +19,16 @@ function TaskRow(props) {
     let taskIndex = (props.index + 1 + ". ");
 
     return (
-        <p className={"task"} id={"task" + props.index} >
+        <li className={"task"} id={"task" + props.index} style={{backgroundColor:"white",marginTop:"1%",height:elementsSizeUnit/12, width:"110%"}} >
             <Checkbox onClickBox={() => checkboxHandler(props.index)} isChecked={state.tasks[props.index].completed}></Checkbox>
       &nbsp;
-            <Link to={`/todos/${props.task.id}`}><span style={{ fontSize: elementsSizeUnit / 18 }}>
+            <Link className="links" to={`/todos/${props.task.id}`}>
+                <span style={{ fontSize: elementsSizeUnit / 18, marginLeft:"1%" }}>
                 <b>{taskIndex}</b>{props.task.title}
             </span></Link>
   &nbsp;
             <Button clickFunction={() => delButtonHandler(props.index)} isRemove={true} title="X"></Button>
-        </p>)
+        </li>)
 }
 
 export default TaskRow;

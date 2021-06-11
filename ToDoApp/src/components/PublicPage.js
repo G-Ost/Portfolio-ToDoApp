@@ -24,7 +24,7 @@ function PublicPage(props) {
     }
 
     return (
-        <div style={{ textAlign: "center" }}>
+        <div style={{ textAlign: "center", width: "100%" }}>
             <h1 style={{ fontSize: window.innerHeight / 20 }}>User login</h1>
             <input style={inputStyle} onFocus={() => { setFormInfo({ ...formInfo, email: "" }); setShowError(false) }} value={formInfo.email} onChange={(e) => { setFormInfo({ ...formInfo, email: e.target.value }) }}></input>
             <img alt="lockIcon" style={{ position: "absolute", display: "inline-block", top: window.innerHeight / 9, height: window.innerHeight / 11 }} src={lock}></img>

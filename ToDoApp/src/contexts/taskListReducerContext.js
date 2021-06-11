@@ -90,7 +90,7 @@ function taskListReducer(state, action) {
 
 const TaskListReducerContextProvider = (props) => {
     let storageKey = "toDoTaskList";
-    let elementsSizeUnit = window.innerHeight / 2;
+    let elementsSizeUnit = window.innerHeight > window.innerWidth ? window.innerWidth / 2 : window.innerHeight / 2;
     const [state, dispatch] = useReducer(taskListReducer, [storageKey, []], setTnitialState)
 
     return (
