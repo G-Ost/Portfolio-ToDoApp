@@ -16,10 +16,6 @@ function PublicPage(props) {
                 }
             }
         )
-        // if (!signIn(formInfo.email, formInfo.password)) {
-        //     console.log("x")
-        //     setShowError(true)
-        // }
 
     }
 

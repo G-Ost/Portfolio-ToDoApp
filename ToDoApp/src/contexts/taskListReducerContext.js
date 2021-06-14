@@ -25,15 +25,7 @@ function taskListReducer(state, action) {
     switch (action.type) {
         case "JOIN_EXTERNAL_DATA": {
             if (state.tasks.length === 0) {
-                let modifiedData = action.externalData.map(task => {
-                    return {
-                        title: task.title,
-                        completed: task.completed,
-                        isDisplayable: "inline",
-                        id: "task" + task.id
-                    }
-                });
-                return { ...state, tasks: modifiedData };
+                return { ...state, tasks: action.fetchedData };
             }
             return { ...state }
         }
